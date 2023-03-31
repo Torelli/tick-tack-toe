@@ -7,7 +7,40 @@
     <title>Tic Tac Toe</title>
     <link rel="stylesheet" href="./output.css">
 </head>
-<body>
+<body class="bg-white text-gray-900 dark:text-white dark:bg-gray-900">
+    <nav class="flex justify-between items-center px-4 pt-6 pb-4 border-b border-b-gray-200 dark:border-b-gray-200/5">
+        <div>
+          <h1 class="font-bold text-2xl">Tic Tac Toe</h1>
+          <span class="text-xs text-slate-500">By</span>
+          <div class="text-xs group relative inline">
+            <a class="text-indigo-600 rounded hover:text-indigo-700 active:bg-indigo-700/10 transition-all"
+              href="https://github.com/Torelli" target="_blank">Giovanni Torelli
+            </a>
+            <div
+              class="opacity-0 -translate-x-1 whitespace-nowrap bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-center text-base rounded-lg py-2 absolute z-10 group-hover:translate-x-0 group-hover:opacity-100 -top-3 left-24 px-3 pointer-events-none transition-all">
+              Check out my GitHub!
+              <svg class="absolute text-gray-900 dark:text-white h-2 -left-2 bottom-4 rotate-90" x="0px" y="0px"
+                viewBox="0 0 255 255" xml:space="preserve">
+                <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div>
+          <button id="theme-btn" class="group relative">
+            <i class="fa-solid fa-circle-half-stroke text-2xl"></i>
+            <div
+              class="opacity-0 translate-x-1 whitespace-nowrap bg-gray-900 text-white dark:bg-white dark:text-gray-900 text-center text-base rounded-lg py-2 absolute z-10 group-hover:translate-x-0 group-hover:opacity-100 -top-3 right-10 px-3 pointer-events-none transition-all">
+              <span id="theme-tooltip">Turn on dark mode</span>
+              <svg class="absolute text-gray-900 dark:text-white h-2 -right-2 bottom-4 -rotate-90" x="0px" y="0px"
+                viewBox="0 0 255 255" xml:space="preserve">
+                <polygon class="fill-current" points="0,0 127.5,127.5 255,0" />
+              </svg>
+            </div>
+          </button>
+        </div>
+      </nav>
     <script src="./script.js"></script>
+    <script src="https://kit.fontawesome.com/eb34185c6d.js" crossorigin="anonymous"></script>
 </body>
 </html>
