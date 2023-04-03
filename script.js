@@ -15,25 +15,6 @@ function changeTheme() {
   }
 }
 
-const Player = (marker) => {
-  const _marker = marker;
-
-  let _score = 0;
-
-  const getMarker = () => _marker;
-
-  const getScore = () => _score;
-
-  const playerWin = () => _score++;
-
-  const resetScore = () => (_score = 0);
-
-  return { getMarker, getScore, playerWin, resetScore };
-};
-
-const playerX = Player("X");
-const playerO = Player("O");
-
 const Gameboard = (() => {
   let _board = new Array(9);
 
@@ -75,10 +56,11 @@ const Gameboard = (() => {
           if (value === "O") total++;
           return total;
         }, 0);
-        setPosition(
-          e.target.id.substring(2),
-          Game.switchTurn(playerX, playerO, totalX, totalO)
-        );
+        setPosition(e.target.id.substring(2), Game.switchTurn(totalX, totalO));
+        if (Game.checkRows(_board) !== false) {
+          alert(`${Game.checkRows(_board)} wins!`);
+          clearBoard();
+        }
       });
     }
   };
@@ -90,15 +72,71 @@ const Gameboard = (() => {
   return { getPosition, setPosition, displayBoard, clearBoard };
 })();
 
+const Player = (marker) => {
+  const _marker = marker;
+
+  let _score = 0;
+
+  const getMarker = () => _marker;
+
+  const getScore = () => _score;
+
+  const playerWin = () => _score++;
+
+  const resetScore = () => (_score = 0);
+
+  return { getMarker, getScore, playerWin, resetScore };
+};
+
 const Game = (() => {
-  const switchTurn = (player1, player2, totalX, totalO) => {
+  const playerX = Player("X");
+  const playerO = Player("O");
+
+  const switchTurn = (totalX, totalO) => {
     if (totalX > totalO) {
-      return player2;
+      return playerO;
     } else {
-      return player1;
+      return playerX;
     }
   };
-  return { switchTurn };
+
+  const checkRows = (board) => {
+    if (
+      board[0] !== undefined &&
+      board[0] === board[1] &&
+      board[1] === board[2]
+    ) {
+      if (board[0] === "X") {
+        return "Player1";
+      } else {
+        return "Player2";
+      }
+    } else if (
+      board[3] !== undefined &&
+      board[3] === board[4] &&
+      board[4] === board[5]
+    ) {
+      if (board[3] === "X") {
+        return "Player 1";
+      } else {
+        return "Player 2";
+      }
+    } else if (
+      board[6] !== undefined &&
+      board[6] === board[7] &&
+      board[7] === board[8]
+    ) {
+      if (board[6] === "X") {
+        return "Player 1";
+      } else {
+        return "Player 2";
+      }
+    } else {
+      return false;
+    }
+  };
+
+  return { switchTurn, checkRows };
 })();
 
 document.onload = changeTheme();
