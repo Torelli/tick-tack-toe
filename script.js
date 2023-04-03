@@ -15,6 +15,25 @@ function changeTheme() {
   }
 }
 
+const Player = (marker) => {
+  const _marker = marker;
+
+  let _score = 0;
+
+  const getMarker = () => _marker;
+
+  const getScore = () => _score;
+
+  const playerWin = () => _score++;
+
+  const resetScore = () => (_score = 0);
+
+  return { getMarker, getScore, playerWin, resetScore };
+};
+
+const playerX = Player("X");
+const playerO = Player("O");
+
 const Gameboard = (() => {
   let _board = new Array(9);
 
@@ -23,33 +42,64 @@ const Gameboard = (() => {
   const setPosition = (num, player) => {
     if (_board[num] === undefined) {
       _board[num] = player.getMarker();
+      document.getElementById(`p-${num}`).textContent = _board[num];
     }
+    displayBoard();
   };
 
   const displayBoard = () => {
     const htmlBoard = document.querySelector("#board");
     htmlBoard.innerHTML = "";
-    for (position of _board) {
-      const htmlPosition = document.createElement("div");
+    for ([position, value] of _board.entries()) {
+      const htmlPosition = document.createElement("button");
       htmlPosition.classList.add(
-        "border-2",
-        "border-gray-200",
-        "dark:border-gray-200/5"
+        "text-3xl",
+        "bg-white",
+        "dark:bg-gray-900",
+        "hover:bg-gray-200",
+        "dark:hover:bg-gray-800",
+        "transition-all"
       );
-      if (position !== undefined) htmlPosition.textContent = position;
+      htmlPosition.setAttribute("id", `p-${position}`);
+      if (position !== undefined) htmlPosition.textContent = value;
       htmlBoard.appendChild(htmlPosition);
+
+      const htmlPositionAppended = document.querySelector(`#p-${position}`);
+
+      htmlPositionAppended.addEventListener("click", (e) => {
+        const totalX = _board.reduce((total, value) => {
+          if (value === "X") total++;
+          return total;
+        }, 0);
+        const totalO = _board.reduce((total, value) => {
+          if (value === "O") total++;
+          return total;
+        }, 0);
+        setPosition(
+          e.target.id.substring(2),
+          Game.switchTurn(playerX, playerO, totalX, totalO)
+        );
+      });
     }
   };
-  return { getPosition, setPosition, displayBoard };
+
+  const clearBoard = () => {
+    _board = new Array(9);
+    displayBoard();
+  };
+  return { getPosition, setPosition, displayBoard, clearBoard };
 })();
 
-const Player = (marker) => {
-  const _marker = marker;
-
-  const getMarker = () => _marker;
-
-  return { getMarker };
-};
+const Game = (() => {
+  const switchTurn = (player1, player2, totalX, totalO) => {
+    if (totalX > totalO) {
+      return player2;
+    } else {
+      return player1;
+    }
+  };
+  return { switchTurn };
+})();
 
 document.onload = changeTheme();
 
@@ -62,3 +112,5 @@ themeButton.addEventListener("click", () => {
     changeTheme();
   }
 });
+
+Gameboard.displayBoard();
