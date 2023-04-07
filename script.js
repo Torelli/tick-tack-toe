@@ -57,8 +57,8 @@ const Gameboard = (() => {
           return total;
         }, 0);
         setPosition(e.target.id.substring(2), Game.switchTurn(totalX, totalO));
-        if (Game.checkColumns(_board) !== false) {
-          alert(`${Game.checkColumns(_board)} wins!`);
+        if (Game.checkWinner(_board) !== false) {
+          alert(`${Game.checkWinner(_board)}`);
           clearBoard();
         }
       });
@@ -100,7 +100,7 @@ const Game = (() => {
     }
   };
 
-  const checkRows = (board) => {
+  const _checkRows = (board) => {
     if (
       board[0] !== undefined &&
       board[0] === board[1] &&
@@ -136,7 +136,7 @@ const Game = (() => {
     }
   };
 
-  const checkColumns = (board) => {
+  const _checkColumns = (board) => {
     if (
       board[0] !== undefined &&
       board[0] === board[3] &&
@@ -170,9 +170,26 @@ const Game = (() => {
     } else {
       return false;
     }
-  }
+  };
 
-  return { switchTurn, checkRows, checkColumns };
+  const checkWinner = (board) => {
+    const markedPositions = board.reduce((total, value) => {
+      if (value !== undefined) total++;
+      return total;
+    }, 0);;
+    if (_checkRows(board) || _checkColumns(board)) {
+      const winner = _checkRows(board)
+        ? _checkRows(board)
+        : _checkColumns(board);
+      return `${winner} wins!`;
+    } else if (markedPositions === 9) {
+      return "It`s a tie";
+    } else {
+      return false;
+    }
+  };
+
+  return { switchTurn, checkWinner };
 })();
 
 document.onload = changeTheme();
