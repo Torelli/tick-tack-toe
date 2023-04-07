@@ -57,8 +57,8 @@ const Gameboard = (() => {
           return total;
         }, 0);
         setPosition(e.target.id.substring(2), Game.switchTurn(totalX, totalO));
-        if (Game.checkRows(_board) !== false) {
-          alert(`${Game.checkRows(_board)} wins!`);
+        if (Game.checkColumns(_board) !== false) {
+          alert(`${Game.checkColumns(_board)} wins!`);
           clearBoard();
         }
       });
@@ -136,7 +136,43 @@ const Game = (() => {
     }
   };
 
-  return { switchTurn, checkRows };
+  const checkColumns = (board) => {
+    if (
+      board[0] !== undefined &&
+      board[0] === board[3] &&
+      board[3] === board[6]
+    ) {
+      if (board[0] === "X") {
+        return "Player1";
+      } else {
+        return "Player2";
+      }
+    } else if (
+      board[1] !== undefined &&
+      board[1] === board[4] &&
+      board[4] === board[7]
+    ) {
+      if (board[1] === "X") {
+        return "Player 1";
+      } else {
+        return "Player 2";
+      }
+    } else if (
+      board[2] !== undefined &&
+      board[2] === board[5] &&
+      board[5] === board[8]
+    ) {
+      if (board[2] === "X") {
+        return "Player 1";
+      } else {
+        return "Player 2";
+      }
+    } else {
+      return false;
+    }
+  }
+
+  return { switchTurn, checkRows, checkColumns };
 })();
 
 document.onload = changeTheme();
