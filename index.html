@@ -45,21 +45,24 @@
   <main class="flex flex-col">
     <div class="flex justify-between px-10 py-5">
       <div class="text-center">
-        <h2 class="sm:text-3xl font-bold">Player 1</h2>
+        <h2 id="player1" class="sm:text-3xl font-bold">Player 1</h2>
         <small id="player1-score" class="text-gray-500 dark:text-gray-400">Score: 0</small>
       </div>
-      <div id="result" class="text-3xl font-bold"></div>
+      <div id="result" class="sm:text-3xl font-bold"></div>
       <div class="text-center">
-        <h2 class="sm:text-3xl font-bold">Player 2</h2>
+        <h2 id="player2" class="sm:text-3xl font-bold">Player 2</h2>
         <small id="player2-score" class="text-gray-500 dark:text-gray-400">Score: 0</small>
       </div>
     </div>
     <div class="relative p-5 flex items-center justify-center">
-      <div id="board" class="w-80 h-80 shadow-2xl bg-gray-300 dark:bg-gray-300/5 rounded grid grid-cols-3 grid-rows-3 gap-1">
+      <div id="board"
+        class="w-80 h-80 shadow-2xl bg-gray-300 dark:bg-gray-300/5 rounded grid grid-cols-3 grid-rows-3 gap-1">
       </div>
-      <div class="h-80 w-80 absolute flex justify-center items-center backdrop-blur-sm z-50">
-        <button class="px-6 py-6 bg-red-600 dark:bg-red-700 hover:bg-red-700 hover:dark:bg-red-600 text-white text-3xl rounded-xl transition-all">
-          <i class="fa-solid fa-rotate-right"></i>
+      <div id="game-menu"
+        class="h-80 w-80 opacity-0 hidden absolute justify-center items-center backdrop-blur-sm z-50 transition-all">
+        <button id="btn-next-round"
+          class="px-6 py-6 bg-red-600 dark:bg-red-700 hover:bg-red-700 hover:dark:bg-red-600 hover:scale-105 text-white text-3xl rounded-xl transition-all">
+          <i id="btn-reset-icon" class="fa-solid fa-rotate-right"></i>
         </button>
       </div>
     </div>

@@ -208,6 +208,7 @@ const Game = (() => {
     if (winner) {
       if (winner === "Player 1") {
         playerX.win();
+        
       } else {
         playerO.win();
       }
@@ -223,11 +224,16 @@ const Game = (() => {
     const display = document.querySelector("#result");
     const player1Score = document.querySelector("#player1-score");
     const player2Score = document.querySelector("#player2-score");
+    const gameMenu = document.querySelector("#game-menu");
     const winner = _checkWinner(board);
     if (winner) {
       display.textContent = winner;
       player1Score.textContent = `Score: ${playerX.getScore()}`;
       player2Score.textContent = `Score: ${playerO.getScore()}`;
+      gameMenu.classList.replace("hidden", "flex");
+      setTimeout(() => {
+        gameMenu.classList.replace("opacity-0", "opacity-100");
+      }, 150);
     }
   };
 
@@ -247,3 +253,20 @@ themeButton.addEventListener("click", () => {
 });
 
 Gameboard.displayBoard();
+
+const btnReset = document.querySelector("#btn-next-round");
+
+btnReset.addEventListener("click", () => {
+  const btnIcon = document.querySelector("#btn-reset-icon");
+  const gameMenu = document.querySelector("#game-menu");
+  const display = document.querySelector("#result");
+
+  display.textContent = "";
+  btnIcon.classList.add("animate-spin");
+  Gameboard.clearBoard();
+  gameMenu.classList.replace("opacity-100", "opacity-0");
+  setTimeout(() => {
+    gameMenu.classList.replace("flex", "hidden");
+    btnIcon.classList.remove("animate-spin");
+  }, 200);
+});
