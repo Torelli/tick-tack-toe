@@ -57,10 +57,7 @@ const Gameboard = (() => {
           return total;
         }, 0);
         setPosition(e.target.id.substring(2), Game.switchTurn(totalX, totalO));
-        if (Game.checkWinner(_board) !== false) {
-          alert(`${Game.checkWinner(_board)}`);
-          clearBoard();
-        }
+        Game.displayResult(_board);
       });
     }
   };
@@ -81,11 +78,11 @@ const Player = (marker) => {
 
   const getScore = () => _score;
 
-  const playerWin = () => _score++;
+  const win = () => _score++;
 
   const resetScore = () => (_score = 0);
 
-  return { getMarker, getScore, playerWin, resetScore };
+  return { getMarker, getScore, win, resetScore };
 };
 
 const Game = (() => {
@@ -107,9 +104,9 @@ const Game = (() => {
       board[1] === board[2]
     ) {
       if (board[0] === "X") {
-        return "Player1";
+        return "Player 1";
       } else {
-        return "Player2";
+        return "Player 2";
       }
     } else if (
       board[3] !== undefined &&
@@ -143,9 +140,9 @@ const Game = (() => {
       board[3] === board[6]
     ) {
       if (board[0] === "X") {
-        return "Player1";
+        return "Player 1";
       } else {
-        return "Player2";
+        return "Player 2";
       }
     } else if (
       board[1] !== undefined &&
@@ -172,15 +169,48 @@ const Game = (() => {
     }
   };
 
-  const checkWinner = (board) => {
+  const _checkDiagonals = (board) => {
+    if (
+      board[0] !== undefined &&
+      board[0] === board[4] &&
+      board[4] === board[8]
+    ) {
+      if (board[0] === "X") {
+        return "Player 1";
+      } else {
+        return "Player 2";
+      }
+    } else if (
+      board[2] !== undefined &&
+      board[2] === board[4] &&
+      board[4] === board[6]
+    ) {
+      if (board[2] === "X") {
+        return "Player 1";
+      } else {
+        return "Player 2";
+      }
+    } else {
+      return false;
+    }
+  };
+
+  const _checkWinner = (board) => {
     const markedPositions = board.reduce((total, value) => {
       if (value !== undefined) total++;
       return total;
-    }, 0);;
-    if (_checkRows(board) || _checkColumns(board)) {
-      const winner = _checkRows(board)
-        ? _checkRows(board)
-        : _checkColumns(board);
+    }, 0);
+    const winner = _checkRows(board)
+      ? _checkRows(board)
+      : _checkColumns(board)
+      ? _checkColumns(board)
+      : _checkDiagonals(board);
+    if (winner) {
+      if (winner === "Player 1") {
+        playerX.win();
+      } else {
+        playerO.win();
+      }
       return `${winner} wins!`;
     } else if (markedPositions === 9) {
       return "It`s a tie";
@@ -189,7 +219,19 @@ const Game = (() => {
     }
   };
 
-  return { switchTurn, checkWinner };
+  const displayResult = (board) => {
+    const display = document.querySelector("#result");
+    const player1Score = document.querySelector("#player1-score");
+    const player2Score = document.querySelector("#player2-score");
+    const winner = _checkWinner(board);
+    if (winner) {
+      display.textContent = winner;
+      player1Score.textContent = `Score: ${playerX.getScore()}`;
+      player2Score.textContent = `Score: ${playerO.getScore()}`;
+    }
+  };
+
+  return { switchTurn, displayResult };
 })();
 
 document.onload = changeTheme();
